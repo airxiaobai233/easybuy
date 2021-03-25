@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="easybuy_killgoods_service" />
+        <module name="easybuy_utils" />
+        <module name="easybuy_entity" />
+        <module name="easybuy_mapper" />
+        <module name="easybuy_news_service" />
+        <module name="easybuy_products_service" />
+        <module name="easybuy_myweb" />
+        <module name="easybuy_common" />
+        <module name="easybuy_interface_service" />
+        <module name="easybuy_users_service" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="easybuy_product_service" target="1.7" />
+      <module name="easybuy_user_service" target="1.7" />
+      <module name="easybuy_web" target="1.7" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

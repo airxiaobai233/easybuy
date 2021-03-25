@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+<!--
+	 数据源
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url"
+			value="jdbc:mysql://localhost:3306/sxnd_test?useUnicode=true&amp;characterEncoding=UTF8" />
+		<property name="username" value="root" />
+		<property name="password" value="root"></property>
+	</bean>
+
+
+	 SQLSession工厂
+	<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath:com/oracle/student/mapper/*.xml"></property>
+	</bean>
+	 事务管理器
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	 配置TX
+	<tx:advice id="myadvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			 必须依赖一个事务 如果没有事务就先创建一个事务，如果有就直接用
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			 只读事务
+			<tx:method name="*" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+	 配置AOP
+	<aop:config>
+		<aop:pointcut id="mypointcut"
+			expression="execution(* com.oracle.student.biz.impl.*.*(..))" />
+		<aop:advisor advice-ref="myadvice" pointcut-ref="mypointcut" />
+	</aop:config>
+	 Mapper代理对象
+	 通过代理配置所有的Mapper对象 会生成com.oracle.dao包下面的所有mapper类对象，默认对象的id是接口名称首字母小写
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactoryBeanName" value="sessionFactory" />
+		<property name="basePackage" value="com.oracle.student.mapper" />
+	</bean>
+	-->
+
+	 <!--生成业务对象-->
+<!--	<context:annotation-config />-->
+<!--	<context:component-scan base-package="com.xja" />-->
+
+
+
+	<dubbo:application name="demo-web-xfz" />
+	<!-- dubbo接口去除注册中心，采用直连的方式  -->
+<!--	<dubbo:registry address="N/A" />-->
+
+	<dubbo:registry address="zookeeper://127.0.0.1:2181"  />
+
+	<!--从dubbo中获取服务对象-->
+	<!--<dubbo:reference id="productService" interface="com.xja.easybuy.service.ProductService"
+					 url="dubbo://127.0.0.1:20880" check="false" timeout="60000" />-->
+
+
+    <dubbo:reference id="productService" interface="com.xja.dubbo.service.ProductService"  />
+	<dubbo:reference id="userService" interface="com.xja.dubbo.service.UserService"   />
+	<dubbo:reference id="killGoodsService" interface="com.xja.dubbo.service.KillGoodsService"   />
+<!--        <dubbo:annotation package="com.xja.easybuy.controller"></dubbo:annotation>-->
+</beans>

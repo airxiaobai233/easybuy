@@ -4,6 +4,7 @@ package com.xja.dubbo.service.impl;
 import com.xja.dubbo.entity.EasybuySeckillGoods;
 import com.xja.dubbo.entity.EasybuySeckillOrder;
 import com.xja.dubbo.mapper.EasybuySeckillGoodsMapper;
+import com.xja.dubbo.mapper.EasybuySeckillOrderMapper;
 import com.xja.dubbo.service.KillGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -15,6 +16,10 @@ import java.util.*;
 public class KillGoodsServiceImpl implements KillGoodsService {
     @Autowired
     private EasybuySeckillGoodsMapper easybuySeckillGoodsMapper;
+
+    @Autowired
+    private EasybuySeckillOrderMapper easybuySeckillOrderMapper;
+
     @Autowired
     private RedisTemplate redisTemplate;
 
@@ -98,6 +103,77 @@ public class KillGoodsServiceImpl implements KillGoodsService {
             orderList.add(killOrder);
         }
         return orderList;
+    }
+
+    @Override
+    public void addPayOrder(EasybuySeckillOrder pkillorder) throws Exception {
+        //从redis中获取抢购的订单对象
+        String buykey = pkillorder.getUserId()+"_"+pkillorder.getSeckillId();
+        //获取订单对象
+        EasybuySeckillOrder killOrder =(EasybuySeckillOrder) redisTemplate.boundHashOps("userKillOrder").get(buykey);
+        //把该订单的状态改为支付，同时完成订单对象的添加
+        killOrder.setId(pkillorder.getId());
+        killOrder.setReceiver(pkillorder.getReceiver());
+        killOrder.setReceiverAddress(pkillorder.getReceiverAddress());
+        killOrder.setReceiverMobile(pkillorder.getReceiverMobile());
+        killOrder.setStatus("3");  //已支付
+        easybuySeckillOrderMapper.insertSelective(killOrder);
+
+        //抢购订单一旦完成，需要把该订单从redis中删除，同时删除用户的订单对应的KEY
+        redisTemplate.boundHashOps("userKillOrder").delete(buykey);
+        redisTemplate.boundListOps("userkilllist_"+pkillorder.getUserId()).remove(0,buykey);
+
+    }
+
+    //超时订单处理
+    @Override
+    public void deleteUserKillOrder(Integer gid, Integer uid) throws Exception {
+        String buykey = uid +"_"+gid;
+        //获取该订单的信息
+        EasybuySeckillOrder killOrder = (EasybuySeckillOrder) redisTemplate.boundHashOps("userKillOrder").get(buykey);
+        if (killOrder==null)
+            return;
+        //获取抢购的商品信息
+        EasybuySeckillGoods goods = (EasybuySeckillGoods) redisTemplate.boundHashOps("kill_goods_list").get(gid.toString());
+        if (goods!=null){
+            //把抢购的商品的数量增加1
+            goods.setStockCount(goods.getStockCount()+1);
+            redisTemplate.boundHashOps("kill_goods_list").put(gid.toString(),goods);
+        }else {
+            //此时如果抢购的商品不存在了，说明抢购完毕，需要从mysql中恢复一件商品到redis中
+            goods = easybuySeckillGoodsMapper.selectByPrimaryKey(Long.parseLong(gid.toString()));
+            goods.setStockCount(goods.getStockCount()+1);
+            easybuySeckillGoodsMapper.updateByPrimaryKeySelective(goods);
+            redisTemplate.boundHashOps("kill_goods_list").put(gid.toString(),goods);
+        }
+        //把该订单删除
+        redisTemplate.boundHashOps("userKillOrder").delete(buykey);
+        //把该用户的订单的key列表删除
+        redisTemplate.boundListOps("userkilllist_"+uid).remove(0,buykey);
+
+    }
+
+    @Override
+    public EasybuySeckillOrder selectKillOrderByUiuGid(Integer uid,Integer gid) throws Exception{
+        String buykey = uid+"_"+gid;
+        return  (EasybuySeckillOrder) redisTemplate.boundHashOps("userKillOrder").get(buykey);
+    }
+
+    @Override
+    public EasybuySeckillOrder selectKillOrderByOid(String oid) throws Exception {
+        return easybuySeckillOrderMapper.selectByPrimaryKey(Long.parseLong(oid));    }
+
+    @Override
+    public void updateKillOrderByOid(EasybuySeckillOrder order) throws Exception {
+        easybuySeckillOrderMapper.updateByPrimaryKeySelective(order);
+    }
+
+
+    //测试有没有用easybuySeckillGoodsMapper
+    @Override
+    public void test() {
+        EasybuySeckillGoods easybuySeckillGoods = easybuySeckillGoodsMapper.selectByPrimaryKey(1L);
+        System.out.println(easybuySeckillGoods.getTitle());
     }
 
 

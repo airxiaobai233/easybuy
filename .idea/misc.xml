@@ -9,6 +9,7 @@
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/easybuy_common/pom.xml" />
         <option value="$PROJECT_DIR$/easybuy_product_service/pom.xml" />
         <option value="$PROJECT_DIR$/easybuy_user_service/pom.xml" />
         <option value="$PROJECT_DIR$/easybuy_web/pom.xml" />

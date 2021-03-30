@@ -31,7 +31,7 @@
   </select>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from easybuy_seckill_goods
     where id = #{id,jdbcType=BIGINT}
@@ -42,18 +42,18 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.xja.dubbo.entity.EasybuySeckillGoods" >
-    insert into easybuy_seckill_goods (id, goods_id, item_id, 
-      title, small_pic, price, 
-      cost_price, seller_id, create_time, 
-      check_time, status, start_time, 
-      end_time, num, stock_count, 
-      introduction)
-    values (#{id,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT}, #{itemId,jdbcType=BIGINT}, 
-      #{title,jdbcType=VARCHAR}, #{smallPic,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
-      #{costPrice,jdbcType=DECIMAL}, #{sellerId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{checkTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, 
-      #{endTime,jdbcType=TIMESTAMP}, #{num,jdbcType=INTEGER}, #{stockCount,jdbcType=INTEGER}, 
-      #{introduction,jdbcType=VARCHAR})
+    insert into easybuy_seckill_goods (id, goods_id, item_id,
+                                       title, small_pic, price,
+                                       cost_price, seller_id, create_time,
+                                       check_time, status, start_time,
+                                       end_time, num, stock_count,
+                                       introduction)
+    values (#{id,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT}, #{itemId,jdbcType=BIGINT},
+            #{title,jdbcType=VARCHAR}, #{smallPic,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL},
+            #{costPrice,jdbcType=DECIMAL}, #{sellerId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+            #{checkTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP},
+            #{endTime,jdbcType=TIMESTAMP}, #{num,jdbcType=INTEGER}, #{stockCount,jdbcType=INTEGER},
+            #{introduction,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.xja.dubbo.entity.EasybuySeckillGoods" >
     insert into easybuy_seckill_goods
@@ -212,20 +212,20 @@
   <update id="updateByPrimaryKey" parameterType="com.xja.dubbo.entity.EasybuySeckillGoods" >
     update easybuy_seckill_goods
     set goods_id = #{goodsId,jdbcType=BIGINT},
-      item_id = #{itemId,jdbcType=BIGINT},
-      title = #{title,jdbcType=VARCHAR},
-      small_pic = #{smallPic,jdbcType=VARCHAR},
-      price = #{price,jdbcType=DECIMAL},
-      cost_price = #{costPrice,jdbcType=DECIMAL},
-      seller_id = #{sellerId,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      check_time = #{checkTime,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=VARCHAR},
-      start_time = #{startTime,jdbcType=TIMESTAMP},
-      end_time = #{endTime,jdbcType=TIMESTAMP},
-      num = #{num,jdbcType=INTEGER},
-      stock_count = #{stockCount,jdbcType=INTEGER},
-      introduction = #{introduction,jdbcType=VARCHAR}
+        item_id = #{itemId,jdbcType=BIGINT},
+        title = #{title,jdbcType=VARCHAR},
+        small_pic = #{smallPic,jdbcType=VARCHAR},
+        price = #{price,jdbcType=DECIMAL},
+        cost_price = #{costPrice,jdbcType=DECIMAL},
+        seller_id = #{sellerId,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        check_time = #{checkTime,jdbcType=TIMESTAMP},
+        status = #{status,jdbcType=VARCHAR},
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+        num = #{num,jdbcType=INTEGER},
+        stock_count = #{stockCount,jdbcType=INTEGER},
+        introduction = #{introduction,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

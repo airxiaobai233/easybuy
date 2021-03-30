@@ -11,11 +11,11 @@
   <sql id="Base_Column_List" >
     id, name, parentId, type, iconClass
   </sql>
-  <select id="selectChildrenMenu" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectFirstCategory" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from easybuy_product_category
-    where id = #{id,jdbcType=INTEGER}
+    where  parentId =0
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 

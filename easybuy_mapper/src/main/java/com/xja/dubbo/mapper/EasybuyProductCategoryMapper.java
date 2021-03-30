@@ -18,6 +18,6 @@ public interface EasybuyProductCategoryMapper {
 
     int updateByPrimaryKey(EasybuyProductCategory record);
 
-    //查询子菜单信息
-//    public List<EasybuyProductCategory> selectChildrenMenu(Map<String,Object> pmap);
+    //查询商品的一级菜单信息
+    public List<EasybuyProductCategory> selectFirstCategory();
 }

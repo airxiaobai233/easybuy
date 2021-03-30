@@ -58,5 +58,7 @@
     <!-- 定义对外发布接口 -->
     <dubbo:service interface="com.xja.dubbo.service.ProductService"
                    ref="productService"></dubbo:service>
+    <dubbo:service interface="com.xja.dubbo.service.CategoryService"
+                   ref="categoryService"></dubbo:service>
 
 </beans>

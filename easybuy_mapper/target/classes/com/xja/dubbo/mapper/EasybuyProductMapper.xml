@@ -21,7 +21,7 @@
   <select id="selectProds" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />
-    from easybuy_product
+    ,(select name from easybuy_product_category  epc where epc.id=ep.categoryLevel1Id)level1Name from easybuy_product ep;
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 

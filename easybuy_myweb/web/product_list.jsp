@@ -8,24 +8,40 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link type="text/css" rel="stylesheet" href="/css/style.css" />
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" href="/css/style.css" />
 <!--[if IE 6]>
-<script src="/js/iepng.js" type="text/javascript"></script>
-<script type="text/javascript">
-    EvPNG.fix('div, ul, img, li, input, a');
-</script>
-<![endif]-->
+    <title>易买天下</title>
+    <script src="/js/iepng.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        EvPNG.fix('div, ul, img, li, input, a');
+    </script>
+    <![endif]-->
 
-<script type="text/javascript" src="/js/jquery-1.8.2.min.js"></script>
-<script type="text/javascript" src="/js/menu.js"></script>
+    <script type="text/javascript" src="/js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="/js/menu.js"></script>
 
-<script type="text/javascript" src="/js/lrscroll_1.js"></script>
+    <script type="text/javascript" src="/js/lrscroll_1.js"></script>
 
 
-<script type="text/javascript" src="/js/n_nav.js"></script>
+    <script type="text/javascript" src="/js/n_nav.js"></script>
+    <script language="JavaScript">
+        function searchForm(type,op){
+            if (type=="npage"){
+                document.searchForm.npage.value = op;
+            }
+            if (type=="price"){
+                document.searchForm.price.value = op;
+            }
+            if (type=="levelId"){
+                document.searchForm.categorylevel1id.value = op;
+            }
+            document.searchForm.submit();
+        }
+    </script>
 
-<title>易买天下</title>
+
 </head>
 <body>
 <!--Begin Header Begin-->
@@ -155,10 +171,14 @@
     </div>
 </div>
 <div class="top">
+    <span style="color: red">香水</span>
     <div class="logo"><a href="Index.html"><img src="/images/logo.png" /></a></div>
     <div class="search">
-        <form>
-            <input type="text" value="" class="s_ipt" />
+        <form action="/product/list" method="post" name="searchForm">
+            <input type="text" name="keyword" value="" class="s_ipt" />
+            <input type="hidden" name="price" value="${product.price}" class="s_ipt">
+            <input type="hidden" name="npage" value="1" class="s_ipt">
+            <input type="hidden" name="categorylevel1id" value="${product.categorylevel1id}" class="s_ipt">
             <input type="submit" value="搜索" class="s_btn" />
         </form>
         <span class="fl"><a href="#">咖啡</a><a href="#">iphone 6S</a><a href="#">新鲜美食</a><a href="#">蛋糕</a><a href="#">日用品</a><a href="#">连衣裙</a></span>
@@ -178,21 +198,13 @@
             <!--End 购物车未登录 End-->
             <!--Begin 购物车已登录 Begin-->
             <ul class="cars">
-                <li>
-                    <div class="img"><a href="#"><img src="/images/car1.jpg" width="58" height="58" /></a></div>
-                    <div class="name"><a href="#">法颂浪漫梦境50ML 香水女士持久清新淡香 送2ML小样3只</a></div>
-                    <div class="price"><font color="#ff4e00">￥399</font> X1</div>
-                </li>
-                <li>
-                    <div class="img"><a href="#"><img src="/images/car2.jpg" width="58" height="58" /></a></div>
-                    <div class="name"><a href="#">香奈儿（Chanel）邂逅活力淡香水50ml</a></div>
-                    <div class="price"><font color="#ff4e00">￥399</font> X1</div>
-                </li>
-                <li>
-                    <div class="img"><a href="#"><img src="/images/car2.jpg" width="58" height="58" /></a></div>
-                    <div class="name"><a href="#">香奈儿（Chanel）邂逅活力淡香水50ml</a></div>
-                    <div class="price"><font color="#ff4e00">￥399</font> X1</div>
-                </li>
+                <c:forEach items="${carItemList}" var="carItem">
+                    <li>
+                        <div class="img"><a href="#"><img src="/images/car1.jpg" width="58" height="58" /></a></div>
+                        <div class="name"><a href="#">${carItem.product.description}</a></div>
+                        <div class="price"><font color="#ff4e00">￥${carItem.product.price}</font> X${carItem.buyNum}</div>
+                    </li>
+                </c:forEach>
             </ul>
             <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>1058</span></div>
             <div class="price_a"><a href="#">去购物车结算</a></div>
@@ -458,6 +470,7 @@
             <li><a href="MakeUp.html">美妆</a></li>
             <li><a href="Digital.html">数码</a></li>
             <li><a href="GroupBuying.html">团购</a></li>
+            <li><a href="/killgoods/list">秒杀</a></li>
         </ul>
         <div class="m_ad">中秋送好礼！</div>
     </div>
@@ -475,20 +488,21 @@
     <div class="content mar_10">
         <table border="0" class="choice" style="width:100%; font-family:'宋体'; margin:0 auto;" cellspacing="0" cellpadding="0">
             <tr valign="top">
-                <td width="70">&nbsp; 品牌：</td>
-                <td class="td_a"><a href="#" class="now">香奈儿（Chanel）</a><a href="#">迪奥（Dior）</a><a href="#">范思哲（VERSACE）</a><a href="#">菲拉格慕（Ferragamo）</a><a href="#">兰蔻（LANCOME）</a><a href="#">爱马仕（HERMES）</a><a href="#">卡文克莱（Calvin Klein）</a><a href="#">古驰（GUCCI）</a><a href="#">宝格丽（BVLGARI）</a><a href="#">阿迪达斯（Adidas）</a><a href="#">卡尔文·克莱恩（CK）</a><a href="#">凌仕（LYNX）</a><a href="#">大卫杜夫（Davidoff）</a><a href="#">安娜苏（Anna sui）</a><a href="#">阿玛尼（ARMANI）</a><a href="#">娇兰（Guerlain）</a></td>
+                <td width="70">&nbsp; 一级分类：</td>
+                <td class="td_a">
+                    <c:forEach items="${categoryList}" var="category">
+                        <a href="javascript:searchForm('levelId',${category.id})"
+                                <c:if test="${product.price==category.id}">class="now" </c:if>   >${category.name}</a>
+                    </c:forEach>
+                </td>
             </tr>
             <tr valign="top">
                 <td>&nbsp; 价格：</td>
-                <td class="td_a"><a href="#">0-199</a><a href="#" class="now">200-399</a><a href="#">400-599</a><a href="#">600-899</a><a href="#">900-1299</a><a href="#">1300-1399</a><a href="#">1400以上</a></td>
-            </tr>
-            <tr>
-                <td>&nbsp; 类型：</td>
-                <td class="td_a"><a href="#">女士香水</a><a href="#">男士香水</a><a href="#">Q版香水</a><a href="#">组合套装</a><a href="#">香体走珠</a><a href="#">其它</a></td>
-            </tr>
-            <tr>
-                <td>&nbsp; 香型：</td>
-                <td class="td_a"><a href="#">浓香水</a><a href="#">香精Parfum香水</a><a href="#">淡香精EDP淡香水</a><a href="#">香露EDT</a><a href="#">古龙水</a><a href="#">其它</a></td>
+                <td class="td_a">
+                    <a href="javascript:searchForm('price','1')" <c:if test="${product.price==1}">class="now" </c:if>>0-100 </a>
+                    <a href="javascript:searchForm('price','2')" <c:if test="${product.price==2}">class="now" </c:if>>100-200 </a>
+                    <a href="javascript:searchForm('price','3')" <c:if test="${product.price==3}">class="now" </c:if>>200以上 </a>
+                </td>
             </tr>
         </table>
     </div>
@@ -559,12 +573,11 @@
             <div class="list_c">
 
                 <ul class="cate_list">
-                    ceshiyixia
                    <c:forEach var="prod" items="${productList}">
                     <li>
                         <div class="img"><a href="#"><img src="/images/per_12.jpg" width="210" height="185" /></a></div>
                         <div class="price">
-                            <font>￥<span>198.00</span></font> &nbsp; 26R
+                            <font>￥<span>${prod.price}</span></font> &nbsp; 26R
                         </div>
                         <div class="name"><a href="#">${prod.name}</a></div>
                         <div class="carbg">
@@ -578,12 +591,11 @@
                 <div class="pages">
                     <a href="#" class="p_pre">上一页</a>
                     <c:forEach var="i" begin="1" end="${pageCount}">
-                        <a href="${pageContext.request.contextPath}/product/list?npage=${i}"
+                        <a href="javascript:searchForm('npage',${i})"
                                 <c:if test="${i==npage}">class="cur"</c:if>
                            >${i}</a>
                     </c:forEach>
-
-                    <a href="#">2</a><a href="#" class="p_pre">下一页</a>
+                    <a href="#" class="p_pre">下一页</a>
                 </div>
 
 

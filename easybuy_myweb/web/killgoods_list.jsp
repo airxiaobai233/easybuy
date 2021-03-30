@@ -23,7 +23,11 @@
 <script type="text/javascript" src="/js/lrscroll_1.js"></script>
 <script type="text/javascript" src="/js/n_nav.js"></script>
 <script type="text/javascript" src="/js/s_ban.js"></script>
-
+<script>
+    function toCar(){
+        location.href="/killgoods/showcar";
+    }
+</script>
 <title>尤洪</title>
 </head>
 <body>
@@ -163,7 +167,7 @@
         <span class="fl"><a href="#">咖啡</a><a href="#">iphone 6S</a><a href="#">新鲜美食</a><a href="#">蛋糕</a><a href="#">日用品</a><a href="#">连衣裙</a></span>
     </div>
     <div class="i_car">
-        <div class="car_t">购物车 [ <span>3</span> ]</div>
+        <div class="car_t" onclick="toCar()">购物车 [ <span>3</span> ]</div>
         <div class="car_bg">
             <!--Begin 购物车未登录 Begin-->
             <div class="un_login">还未登录！<a href="Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！</div>
@@ -524,19 +528,19 @@
             <ul class="p_sell">
                 <c:forEach var="killGoods" items="${seckillGoodsList}">
                 <li>
-                    <div class="img"><img src="images/t1.jpg" width="160" height="140" /></div>
+                    <div class="img"><img src="/images/t1.jpg" width="160" height="140" /></div>
                     <div class="name">${killGoods.title}</div>
                     <div class="price">
                         <table border="0" style="width:100%; color:#888888;" cellspacing="0" cellpadding="0">
                             <tr style="font-family:'宋体';">
                                 <td width="33%">市场价 </td>
                                 <td width="33%">抢购价</td>
-                                <td width="33%">为您节省</td>
+                                <td width="33%">库存</td>
                             </tr>
                             <tr>
                                 <td style="text-decoration:line-through;">￥${killGoods.price}</td>
                                 <td>￥${killGoods.costPrice}</td>
-                                <td>￥${killGoods.price-killGoods.costPrice}</td>
+                                <td>￥${killGoods.stockCount}</td>
                             </tr>
                         </table>
                     </div>

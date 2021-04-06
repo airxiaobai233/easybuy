@@ -36,4 +36,11 @@ public class UserServiceImpl implements UserService {
         return easybuyUser;
     }
 
+    @Override
+    public void updateUser(EasybuyUser user) throws Exception {
+        //应该同属修改redis中的数据
+        //修改数据库中的数据
+        easybuyUserMapper.updateByPrimaryKeySelective(user);
+    }
+
 }

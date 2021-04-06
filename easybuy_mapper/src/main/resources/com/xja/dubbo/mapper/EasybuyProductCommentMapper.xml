@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xja.dubbo.mapper.EasybuyProductCommentMapper">
+  <resultMap id="BaseResultMap" type="com.xja.dubbo.entity.EasybuyProductComment">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="message" jdbcType="VARCHAR" property="message" />
+    <result column="messagescore" jdbcType="INTEGER" property="messagescore" />
+    <result column="isDelete" jdbcType="INTEGER" property="isdelete" />
+    <result column="createdate" jdbcType="DATE" property="createdate" />
+  <!--  用于映射关联用户的名称  -->
+    <result column="uname" jdbcType="VARCHAR" property="uname" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, pid, uid, message, messagescore, isDelete, createdate
+  </sql>
+  <select id="selectLevelCommentNumByPid" parameterType="java.lang.Integer" resultType="map">
+    select COUNT(1) zts,
+    IFNULL((select count(1) from easybuy_product_comment epc1 where epc1.pid = epc.pid and epc1.messagescore>3),0) hps,
+    IFNULL((select count(1) from easybuy_product_comment epc1 where epc1.pid = epc.pid and epc1.messagescore=3),0) zps,
+    IFNULL((select count(1) from easybuy_product_comment epc1 where epc1.pid = epc.pid and epc1.messagescore &lt;3),0) cps
+    from easybuy_product_comment epc where epc.pid = #{value}
+  </select>
+
+
+  <select id="selectCommentByPid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select epc.*,eu.userName uname
+    from easybuy_product_comment epc inner join easybuy_user eu
+    on  eu.id=epc.uid
+    where pid=#{value}
+  </select>
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from easybuy_product_comment
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from easybuy_product_comment
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xja.dubbo.entity.EasybuyProductComment">
+    insert into easybuy_product_comment (id, pid, uid, 
+      message, messagescore, isDelete, 
+      createdate)
+    values (#{id,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, 
+      #{message,jdbcType=VARCHAR}, #{messagescore,jdbcType=INTEGER}, #{isdelete,jdbcType=INTEGER}, 
+      #{createdate,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xja.dubbo.entity.EasybuyProductComment">
+    insert into easybuy_product_comment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="pid != null">
+        pid,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="message != null">
+        message,
+      </if>
+      <if test="messagescore != null">
+        messagescore,
+      </if>
+      <if test="isdelete != null">
+        isDelete,
+      </if>
+      <if test="createdate != null">
+        createdate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pid != null">
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="message != null">
+        #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="messagescore != null">
+        #{messagescore,jdbcType=INTEGER},
+      </if>
+      <if test="isdelete != null">
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="createdate != null">
+        #{createdate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xja.dubbo.entity.EasybuyProductComment">
+    update easybuy_product_comment
+    <set>
+      <if test="pid != null">
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="message != null">
+        message = #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="messagescore != null">
+        messagescore = #{messagescore,jdbcType=INTEGER},
+      </if>
+      <if test="isdelete != null">
+        isDelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="createdate != null">
+        createdate = #{createdate,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xja.dubbo.entity.EasybuyProductComment">
+    update easybuy_product_comment
+    set pid = #{pid,jdbcType=INTEGER},
+      uid = #{uid,jdbcType=INTEGER},
+      message = #{message,jdbcType=VARCHAR},
+      messagescore = #{messagescore,jdbcType=INTEGER},
+      isDelete = #{isdelete,jdbcType=INTEGER},
+      createdate = #{createdate,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

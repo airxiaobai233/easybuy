@@ -34,6 +34,9 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.xja.dubbo.entity.EasybuyProduct" >
+    <selectKey keyProperty="id" resultType="int" order="AFTER">
+    select last_insert_ID()
+    </selectKey>
     insert into easybuy_product (id, name, description, 
       price, stock, categoryLevel1Id, 
       categoryLevel2Id, categoryLevel3Id, fileName, 
@@ -44,6 +47,9 @@
       #{isdelete,jdbcType=INTEGER}, #{sellerId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.xja.dubbo.entity.EasybuyProduct" >
+    <selectKey keyProperty="id" resultType="int" order="AFTER">
+      select last_insert_ID()
+    </selectKey>
     insert into easybuy_product
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

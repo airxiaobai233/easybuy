@@ -1,5 +1,6 @@
 package com.xja.dubbo.service;
 
+import com.xja.dubbo.entity.CarItem;
 import com.xja.dubbo.entity.EasybuyProduct;
 import com.xja.dubbo.entity.EasybuyProductCategory;
 import com.xja.dubbo.entity.EasybuyUser;
@@ -17,4 +18,10 @@ public interface ProductService {
 
     //直接查询所有的product信息
     public List<EasybuyProduct> selectProducts()throws Exception;
+
+    //查询用户的购物车列表
+    public List<CarItem> selectRedisProductAll(EasybuyUser loginuser) throws  Exception;
+
+    //更新商品库存数据
+    public void updateProduct(EasybuyProduct product)throws Exception;
 }

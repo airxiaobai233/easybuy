@@ -78,6 +78,7 @@ public class ProductServiceImpl implements ProductService {
         return resuMap;
     }
 
+    //将购物车信息添加到redis中
     @Override
     public void addCarToRedis(EasybuyUser loginuser, EasybuyProduct buyProd, int buyNum) throws Exception {
         //从redis中获取该用户的购物车列表信息
@@ -90,6 +91,22 @@ public class ProductServiceImpl implements ProductService {
         }
         redisTemplate.boundHashOps("user_car_"+loginuser.getId()).put( buyProd.getId()+"",carItem);
         System.out.println("把购物车的数据保存到redis中");
+    }
+
+    //从redis中获取某个用户的购物车信息
+    @Override
+    public List<CarItem> selectRedisProductAll(EasybuyUser loginuser) throws Exception {
+        return (List<CarItem>)redisTemplate.boundHashOps("user_car_"+loginuser.getId()).values();
+    }
+
+    //修改商品库存信息\
+    @Override
+    public void updateProduct(EasybuyProduct product) throws Exception {
+        //修改商品的时候，应该保证redis和mysql中的数据同步
+        easybuyProductMapper.updateByPrimaryKey(product);
+        //替换redis中的数据
+        solrTemplate.saveBean(product);
+        solrTemplate.commit();
     }
 
     @Override
@@ -170,5 +187,7 @@ public class ProductServiceImpl implements ProductService {
     public List<EasybuyProduct> selectProducts() throws Exception {
         return easybuyProductMapper.selectProds();
     }
+
+
 
 }

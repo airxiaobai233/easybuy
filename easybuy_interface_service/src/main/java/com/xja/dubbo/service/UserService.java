@@ -10,4 +10,7 @@ public interface UserService {
     //从redis中查询当前登录的用户信息
     public  EasybuyUser selectLoginFromRedis(String uuid) throws  Exception;
 
+    //修改redis中的数据需改数据库中的数据
+    public void updateUser(EasybuyUser user)throws Exception;
+
 }

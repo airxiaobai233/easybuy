@@ -243,6 +243,43 @@ public class ProductController {
         return  "redirect:/error.jsp" ;
     }
 
+    @RequestMapping("/showCar")
+    public String showCar(Model model, HttpServletRequest request, HttpServletResponse response,
+                          @CookieValue(required=false) String uuid){
+        try {
+            //获取登录用户的信息
+            EasybuyUser loginuser = userService.selectLoginFromRedis(uuid);
+            //获取购物车的信息
+            //获得cookies的数据
+            String userCarList = CookieUtil.getCookieValue(request, "user_car_list", true);
+            System.out.println(userCarList);
+            List<CarItem> carItemList =null;
+            if(userCarList ==null || "".equals(userCarList)){
+                carItemList =new ArrayList<>();
+            }else{
+
+                carItemList = JsonUtil.jsonToList(userCarList,CarItem.class);
+            }
+
+            if(loginuser !=null){
+                for (CarItem carItem :carItemList){
+                    EasybuyProduct product = carItem.getProduct();
+                    productService.addCarToRedis(loginuser,product,carItem.getBuyNum());
+                }
+                //删除 Cookies中的数据
+                CookieUtil.deleteCookie(request,response,"user_car_list");
+                carItemList = productService.selectRedisProductAll(loginuser);
+            }
+            model.addAttribute("carItemList",carItemList);
+            System.out.println(carItemList);
+            return "BuyCar";
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return "error";
+    }
+
 
 
 

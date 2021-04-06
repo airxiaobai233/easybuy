@@ -24,6 +24,9 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.xja.dubbo.entity.EasybuyOrder" >
+    <selectKey keyProperty="id" resultType="int" order="AFTER">
+      select last_insert_ID()
+    </selectKey>
     insert into easybuy_order (id, userId, loginName, 
       userAddress, createTime, cost, 
       serialNumber)
@@ -32,6 +35,9 @@
       #{serialnumber,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.xja.dubbo.entity.EasybuyOrder" >
+    <selectKey keyProperty="id" resultType="int" order="AFTER">
+      select last_insert_ID()
+    </selectKey>
     insert into easybuy_order
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

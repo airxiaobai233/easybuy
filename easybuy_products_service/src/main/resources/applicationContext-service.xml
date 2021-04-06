@@ -24,6 +24,10 @@
         <property name="sqlSessionFactoryBeanName" value="sessionFactory" />
         <property name="basePackage" value="com.xja.dubbo.mapper" />
     </bean>
+    <!-- 监听类 -->
+    <bean id="messageListener" class="com.xja.dubbo.listener.MyMessageListener"
+          autowire="byName"></bean>
+
     <!-- 事务管理器 -->
     <bean id="transactionManager"
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager">

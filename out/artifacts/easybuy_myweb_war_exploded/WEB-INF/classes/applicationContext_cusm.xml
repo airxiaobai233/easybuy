@@ -84,5 +84,7 @@
 	<dubbo:reference id="categoryService" interface="com.xja.dubbo.service.CategoryService"   />
 	<dubbo:reference id="productImagesService" interface="com.xja.dubbo.service.ProductImagesService"   />
 	<dubbo:reference id="productCommentService" interface="com.xja.dubbo.service.ProductCommentService"   />
-<!--        <dubbo:annotation package="com.xja.easybuy.controller"></dubbo:annotation>-->
+	<dubbo:reference id="orderService" interface="com.xja.dubbo.service.OrderService"   />
+
+	<!--        <dubbo:annotation package="com.xja.easybuy.controller"></dubbo:annotation>-->
 </beans>

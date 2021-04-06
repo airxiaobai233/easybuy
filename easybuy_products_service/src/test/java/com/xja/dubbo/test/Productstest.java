@@ -22,7 +22,7 @@ public class Productstest {
     public static void main(String[] args) {
         try {
             System.out.println("启动了productService业务的服务");
-            ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext-service.xml","applicationContext_redistemplate.xml","applicationContext-solr.xml");
+            ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext-service.xml","applicationContext_redistemplate.xml","applicationContext-solr.xml","applicationContext-jms-consumer.xml");
             ProductService productService = (ProductService) ac.getBean("productService");
             ProductImagesService productImagesService = (ProductImagesService) ac.getBean("productImagesService");
             ProductCommentService productCommentService = (ProductCommentService) ac.getBean("productCommentService");

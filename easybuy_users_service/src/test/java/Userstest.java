@@ -9,7 +9,7 @@ public class Userstest {
     public static void main(String[] args) {
         try {
             System.out.println("启动了user业务的服务");
-            ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext-service.xml","applicationContext_redistemplate.xml");
+            ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext-service.xml","applicationContext_redistemplate.xml","applicationContext-jms-consumer.xml");
             UserService userService = (UserService) ac.getBean("userService");
             EasybuyUser user = userService.selectUserById(2);
             System.out.println("登录者:" +user.getLoginname());

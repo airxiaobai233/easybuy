@@ -18,6 +18,8 @@ public interface EasybuyProductMapper {
 
     int updateByPrimaryKey(EasybuyProduct record);
 
-    //查询所有的商品
+    //查询所有的商品,
     List<EasybuyProduct> selectProds();
+
+
 }

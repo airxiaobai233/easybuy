@@ -6,6 +6,14 @@
         <element id="directory" name="classes">
           <element id="module-output" name="easybuy_products_service" />
           <element id="jpa-descriptors" facet="easybuy_products_service/jpa/JPA" />
+          <element id="module-output" name="easybuy_mapper" />
+          <element id="jpa-descriptors" facet="easybuy_mapper/jpa/JPA" />
+          <element id="module-output" name="easybuy_entity" />
+          <element id="jpa-descriptors" facet="easybuy_entity/jpa/JPA" />
+          <element id="module-output" name="easybuy_interface_service" />
+          <element id="jpa-descriptors" facet="easybuy_interface_service/jpa/JPA" />
+          <element id="module-output" name="easybuy_utils" />
+          <element id="jpa-descriptors" facet="easybuy_utils/jpa/JPA" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:4.3.10.RELEASE" />
@@ -70,6 +78,7 @@
           <element id="library" level="project" name="Maven: org.apache.solr:solr-solrj:4.10.4" />
           <element id="library" level="project" name="Maven: org.codehaus.woodstox:wstx-asl:3.2.7" />
           <element id="library" level="project" name="Maven: org.noggit:noggit:0.5" />
+          <element id="library" level="project" name="Maven: org.freemarker:freemarker:2.3.28" />
         </element>
       </element>
     </root>

@@ -15,6 +15,6 @@ public interface ProductService {
     //根据条件查询相关的对象
     public Map<String,Object> selectProdsBySearch(Integer npage , EasybuyProduct product)  throws Exception;
 
-
-
+    //直接查询所有的product信息
+    public List<EasybuyProduct> selectProducts()throws Exception;
 }

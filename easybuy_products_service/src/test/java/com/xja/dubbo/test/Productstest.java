@@ -5,9 +5,8 @@ import com.github.pagehelper.Page;
 import com.xja.dubbo.entity.EasybuyNews;
 import com.xja.dubbo.entity.EasybuyProduct;
 import com.xja.dubbo.entity.EasybuyProductCategory;
-import com.xja.dubbo.service.CategoryService;
-import com.xja.dubbo.service.NewsService;
-import com.xja.dubbo.service.ProductService;
+import com.xja.dubbo.entity.EasybuyProductImages;
+import com.xja.dubbo.service.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.solr.core.SolrTemplate;
@@ -25,6 +24,8 @@ public class Productstest {
             System.out.println("启动了productService业务的服务");
             ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext-service.xml","applicationContext_redistemplate.xml","applicationContext-solr.xml");
             ProductService productService = (ProductService) ac.getBean("productService");
+            ProductImagesService productImagesService = (ProductImagesService) ac.getBean("productImagesService");
+            ProductCommentService productCommentService = (ProductCommentService) ac.getBean("productCommentService");
 
             /*Map<String,Object> pmap = new HashMap<String, Object>();
             pmap.put("npage",1);
@@ -45,11 +46,19 @@ public class Productstest {
             for (EasybuyProduct pro:productList) {
                 System.out.println(pro.getName());
             }*/
-            CategoryService categoryService = (CategoryService) ac.getBean("categoryService");
+            /*CategoryService categoryService = (CategoryService) ac.getBean("categoryService");
             List<EasybuyProductCategory> categoryList = categoryService.selectFirstCategory();
             for (EasybuyProductCategory category:categoryList){
                 System.out.println(category.getName());
-            }
+            }*/
+            /*List<EasybuyProductImages> productImages = productImagesService.selectImagesByPid(733);
+            for (EasybuyProductImages images:productImages){
+                System.out.println(images.getFilename());
+            }*/
+
+            Map<String, Object> map = productCommentService.selectLevelCommentNumByPid(733);
+            Long pageSize = (long) map.get("hps");
+            System.out.println(pageSize);
             //线程阻塞
             Scanner input = new Scanner(System.in);
             input.nextInt();

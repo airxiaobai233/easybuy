@@ -80,6 +80,7 @@
           <element id="library" level="project" name="Maven: org.apache.solr:solr-solrj:4.10.4" />
           <element id="library" level="project" name="Maven: org.codehaus.woodstox:wstx-asl:3.2.7" />
           <element id="library" level="project" name="Maven: org.noggit:noggit:0.5" />
+          <element id="library" level="project" name="Maven: org.freemarker:freemarker:2.3.28" />
         </element>
       </element>
     </root>

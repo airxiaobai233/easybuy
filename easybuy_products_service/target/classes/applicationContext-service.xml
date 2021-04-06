@@ -60,5 +60,8 @@
                    ref="productService"></dubbo:service>
     <dubbo:service interface="com.xja.dubbo.service.CategoryService"
                    ref="categoryService"></dubbo:service>
-
+    <dubbo:service interface="com.xja.dubbo.service.ProductImagesService"
+                   ref="productImagesService"></dubbo:service>
+    <dubbo:service interface="com.xja.dubbo.service.ProductCommentService"
+                   ref="productCommentService"></dubbo:service>
 </beans>

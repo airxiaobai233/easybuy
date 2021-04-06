@@ -201,7 +201,7 @@
                 <c:forEach items="${carItemList}" var="carItem">
                     <li>
                         <div class="img"><a href="#"><img src="/images/car1.jpg" width="58" height="58" /></a></div>
-                        <div class="name"><a href="#">${carItem.product.description}</a></div>
+                        <div class="name"><a href="#">${carItem.product.name}</a></div>
                         <div class="price"><font color="#ff4e00">￥${carItem.product.price}</font> X${carItem.buyNum}</div>
                     </li>
                 </c:forEach>

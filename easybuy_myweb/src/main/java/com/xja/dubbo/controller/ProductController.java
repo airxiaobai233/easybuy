@@ -1,15 +1,12 @@
 package com.xja.dubbo.controller;
 
 import com.github.pagehelper.Page;
-import com.xja.dubbo.entity.CarItem;
-import com.xja.dubbo.entity.EasybuyProduct;
-import com.xja.dubbo.entity.EasybuyProductCategory;
-import com.xja.dubbo.entity.EasybuyUser;
-import com.xja.dubbo.service.CategoryService;
-import com.xja.dubbo.service.ProductService;
-import com.xja.dubbo.service.UserService;
+import com.xja.dubbo.entity.*;
+import com.xja.dubbo.service.*;
 import com.xja.dubbo.utils.CookieUtil;
 import com.xja.dubbo.utils.JsonUtil;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -17,13 +14,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.OutputStreamWriter;
+import java.util.*;
 
 @Controller
 @RequestMapping("product")
@@ -32,15 +33,106 @@ public class ProductController {
     private ProductService productService;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private ProductImagesService productImagesService;
+    @Autowired
+    private ProductCommentService productCommentService;
 
     @Autowired
     UserService userService;
     @Autowired
     RedisTemplate redisTemplate;
+    @Autowired
+    private FreeMarkerConfigurer configurer;
 
     public ProductController(){
         System.out.println("控制器对象："+productService);
     }
+
+    @RequestMapping("changePage")
+    @ResponseBody
+    public Map changePage(Integer pid,Integer npage){
+
+        System.out.println("开始查询换页的数据了");
+        if (npage==null||npage.equals("")||npage<1){
+            npage=1;
+        }
+
+        //获取图书的评论
+        Map<String,Object> map = new HashMap<String, Object>();
+        //加载评论列表
+        Map<String, Object> commMap = null;
+        try {
+            commMap = productCommentService.selectCommentByPid(pid, npage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        map.put("commMap",commMap);
+        map.put("npage",npage);
+        System.out.println("换页结束！！！");
+        return map;
+
+    }
+
+    @RequestMapping("/{pid}/detail")
+    public String detail(@PathVariable("pid")Integer pid,Model model,HttpServletRequest request){
+        try {
+            String serverPath = request.getServletContext().getRealPath("/");
+            System.out.println("serverPath:"+serverPath);
+            String fileName = serverPath+"product_"+pid+".html";
+            //目标产生一个静态页面（如果存在该页面，则直接返回不存在就生成）
+            File file = new File(fileName);
+
+            //实际应用的时候要加上这一段
+            if (file.exists()){
+                file.delete();
+//                return "redirect:/product_"+pid+".html";
+            }
+            //首先加载一个商品对象
+            EasybuyProduct product = productService.selectById(pid);
+            //加载商品对应的图片内容
+            List<EasybuyProductImages> imagesList = productImagesService.selectImagesByPid(pid);
+
+            //加载评论列表
+            Map<String, Object> commMap = productCommentService.selectCommentByPid(pid, 1);
+            
+            //获取各级评论的数量
+            Map<String, Object> commLevelNumMap = productCommentService.selectLevelCommentNumByPid(pid);
+            //计算好评的百分比
+            double zts = Double.parseDouble(commLevelNumMap.get("zts").toString());
+            double hps = Double.parseDouble(commLevelNumMap.get("hps").toString());
+            int hpb = (int)(hps/zts*100);
+            System.out.println("总评数："+zts+",好评数:"+hps+",好评比:"+hpb);
+            commLevelNumMap.put("hpb",hpb);
+
+            System.out.println("=============================="+commMap);
+            System.out.println("评论列表:"+commMap.get("commentList"));
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put("product",product);
+            map.put("npage",1);
+            map.put("imagesList",imagesList);
+            map.put("commMap",commMap);
+            map.put("commLevelNumMap",commLevelNumMap);
+            //生成页面的内容
+            Configuration configuration = configurer.getConfiguration();
+            //读取模板的内容
+            Template template = configuration.getTemplate("Product.ftl");
+            //输出文件
+            File targetFile = new File(fileName);
+            FileWriter writer = new FileWriter(targetFile);
+//            template.process(map,writer);
+            template.process(map,new OutputStreamWriter(new FileOutputStream(targetFile),"utf-8"));
+            //关闭流
+            writer.close();
+            return "redirect:/product_"+pid+".html";
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "redirect:/error.jsp";
+    }
+
+
     @RequestMapping("list")
     public String list(Integer npage,EasybuyProduct product , Model model,@CookieValue(required = false) String  uuid,HttpServletRequest request){
         try {

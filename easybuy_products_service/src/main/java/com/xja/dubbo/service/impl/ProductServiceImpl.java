@@ -166,4 +166,9 @@ public class ProductServiceImpl implements ProductService {
         return resuMap;
     }
 
+    @Override
+    public List<EasybuyProduct> selectProducts() throws Exception {
+        return easybuyProductMapper.selectProds();
+    }
+
 }

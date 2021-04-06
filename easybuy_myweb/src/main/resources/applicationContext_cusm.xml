@@ -60,6 +60,11 @@
 <!--	<context:annotation-config />-->
 <!--	<context:component-scan base-package="com.xja" />-->
 
+	<bean id="freemarkerConfig"	class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/WEB-INF/ftl/" />
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+
 
 
 	<dubbo:application name="demo-web-xfz" />
@@ -77,5 +82,7 @@
 	<dubbo:reference id="userService" interface="com.xja.dubbo.service.UserService"   />
 	<dubbo:reference id="killGoodsService" interface="com.xja.dubbo.service.KillGoodsService"   />
 	<dubbo:reference id="categoryService" interface="com.xja.dubbo.service.CategoryService"   />
+	<dubbo:reference id="productImagesService" interface="com.xja.dubbo.service.ProductImagesService"   />
+	<dubbo:reference id="productCommentService" interface="com.xja.dubbo.service.ProductCommentService"   />
 <!--        <dubbo:annotation package="com.xja.easybuy.controller"></dubbo:annotation>-->
 </beans>
